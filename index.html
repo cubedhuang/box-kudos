@@ -1,37 +1,39 @@
 <!DOCTYPE html>
 <html lang="en-US">
 	<head>
-		<meta charset="UTF-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<meta http-equiv="X-UA-Compatible" content="ie=edge">
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta http-equiv="X-UA-Compatible" content="ie=edge" />
 
-		<meta name="author" content="cubedhuang">
-		<meta name="description" content="box">
-		<meta name="keywords" content="css, 3d, animation, box, kudos">
-		<meta name="theme-color" content="#d63031">
+		<meta name="author" content="cubedhuang" />
+		<meta name="description" content="box" />
+		<meta name="keywords" content="css, 3d, animation, box, kudos" />
+		<meta name="theme-color" content="#d63031" />
 
-		<meta property="og:title" content="no kudos? box edition">
-		<meta property="og:url" content="https://box.kudos.wtf/">
-		<meta property="og:image" content="https://kudos.wtf/images/no.webp">
+		<meta property="og:title" content="no kudos? box edition" />
+		<meta property="og:url" content="https://box.kudos.wtf/" />
+		<meta property="og:image" content="https://kudos.wtf/images/no.webp" />
 
-		<link rel="shortcut icon" href="https://kudos.wtf/images/no.webp">
+		<link rel="shortcut icon" href="https://kudos.wtf/images/no.webp" />
 
-		<link rel="stylesheet" href="./style.css">
-		<link rel="canonical" href="https://box.kudos.wtf/">
-		<link rel="author" href="https://kudos.wtf/">
-		<link rel="publisher" href="https://kudos.wtf/">
+		<link rel="stylesheet" href="./style.css" />
+		<link rel="canonical" href="https://box.kudos.wtf/" />
+		<link rel="author" href="https://kudos.wtf/" />
+		<link rel="publisher" href="https://kudos.wtf/" />
 
 		<!-- Global site tag (gtag.js) - Google Analytics -->
 		<script async src="https://www.googletagmanager.com/gtag/js?id=UA-107754281-2"></script>
 		<script>
 			window.dataLayer = window.dataLayer || [];
-			function gtag() { dataLayer.push(arguments); }
-			gtag('js', new Date());
+			function gtag() {
+				dataLayer.push(arguments);
+			}
+			gtag("js", new Date());
 
-			gtag('config', 'UA-107754281-2');
+			gtag("config", "UA-107754281-2");
 		</script>
 		<!-- Cloudflare Web Analytics -->
-		<script defer src='https://static.cloudflareinsights.com/beacon.min.js'
+		<script defer src="https://static.cloudflareinsights.com/beacon.min.js"
 			data-cf-beacon='{"token": "52dcb98c1a10492682592c6cfe35319d"}'></script>
 		<!-- End Cloudflare Web Analytics -->
 
@@ -59,12 +61,19 @@
 				.then(res => res.arrayBuffer())
 				.then(buffer => {
 					const actx = new AudioContext();
-					actx.decodeAudioData(buffer, decoded => {
+
+					const startSrc = decoded => {
 						const src = actx.createBufferSource();
 						src.buffer = decoded;
 						src.connect(actx.destination);
 						src.loop = true;
 						src.start();
+						// src.playbackRate.value = 0.2;
+						return src;
+					};
+
+					actx.decodeAudioData(buffer, decoded => {
+						const src = startSrc(decoded);
 
 						if (src.context.currentTime === 0) {
 							const span = document.createElement("span");
@@ -72,13 +81,14 @@
 							document.body.append(span);
 
 							const start = e => {
-								try {
-									src.start();
-								} catch { } finally {
-									span.remove();
-									document.body.removeEventListener("click", start);
-								}
-							}
+								const src = startSrc(decoded);
+
+								span.remove();
+								document.body.removeEventListener(
+									"click",
+									start
+								);
+							};
 
 							document.body.addEventListener("click", start);
 						}
