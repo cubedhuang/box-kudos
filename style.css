@@ -1,6 +1,5 @@
 :root {
-	--cube: #0984e380;
-	--ball: #d63031;
+	--ball: #0984e380;
 	--bounce: 1s;
 	--revolution: 5s;
 }
@@ -110,9 +109,8 @@ body {
 /* cube parts */
 
 .cube * {
-	background: var(--cube);
 	position: absolute;
-	box-shadow: 0 0 0em 0.1em #0004 inset;
+	box-shadow: 0 0 0em 0.1em #0006 inset;
 }
 
 .left,
@@ -121,6 +119,9 @@ body {
 .back {
 	width: 100%;
 	height: 100%;
+	background-image: url("https://kudos.wtf/images/no.webp");
+	background-size: 100% 100%;
+	opacity: 0.8;
 }
 
 .front {
@@ -143,6 +144,9 @@ body {
 }
 
 .top {
+	background-image: url("https://kudos.wtf/images/no.webp");
+	background-size: 100% 100%;
+	opacity: 0.8;
 	transform: translateY(-50%) rotateX(90deg);
 	overflow: hidden;
 }
